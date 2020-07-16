@@ -1,0 +1,23 @@
+{
+  "name": "state-of-the-art-processor",
+  "version": "1.0.0",
+  "description": "This a state of the art processor which validates form submission records.",
+  "main": "index.js",
+  "scripts": {
+    "start:angular": "cd angular/app && npm start",
+    "start:react": "cd react/app && npm start",
+    "start:vue": "cd vue/app && yarn serve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timothyveldhuizen/state-of-the-art-processor.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/timothyveldhuizen/state-of-the-art-processor/issues"
+  },
+  "homepage": "https://github.com/timothyveldhuizen/state-of-the-art-processor#readme",
+  "dependencies": {
+  }
+}
