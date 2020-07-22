@@ -13,7 +13,7 @@ A form submission record exists of:
 |Phone number |A number|
 |Subscription type|Free text|
 |Start Amount |The start amount in Euros|
-|Discount |Either a percentage (%) or a number|
+|Discount |Either a percentage (%) or a amount in Euros|
 |Total Amount |The total amount in Euros|
 
 ## Data validation
@@ -40,4 +40,12 @@ Issue: Vue doesn't hot-reload the dependency in node_modules when making changes
 
 ## Implementation
 
-tbd
+TODO
+- Define which util method should do what
+    - unit testing (jest and node-csv-parse generator and xmlbuilder2)
+    - parsing (node-csv-parse and node-xml2js) for returning a js(on) object that can be used for the validation methods and easy to display in ui
+    - validation should validate: unique field reference, total amount is start amount minus discount, return invalid records in a format that can be displayed in ui
+- Define ui components
+    - Main page
+    - Ui component for uploading file
+    - Ui component for displaying results
