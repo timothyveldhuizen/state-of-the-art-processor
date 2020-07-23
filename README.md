@@ -28,7 +28,9 @@ A form submission record exists of:
 The challenge is to handle xml and csv input files which contain records and validate them.
 Also the input and validation logic should be separated as much as possible, so it is easy to use different (ui) frameworks for displaying it in the browser.
 
-## How to install & start
+## How to use
+
+### Install and start ui
 
 Go to the correct app folder, e.g. `cd angular/app` and run `npm install` or to run go to the root directory and do `npm run start:angular`.
 
@@ -36,15 +38,18 @@ The apps contain a local NPM dependency `form-submission-processor` which points
 
 Note: Angular and React hot-reload the dependency in node_modules when making changes to the files in folder form-submission-processor.
 
-Issue: Vue doesn't hot-reload the dependency in node_modules when making changes to the files in folder form-submission-processor. You have to mannualy do `yarn add file:../../form-submission-processor` to update the dependency.
+Issue: Vue doesn't hot-reload the dependency in node_modules when making changes to the files in folder form-submission-processor. You have to manually do `yarn add file:../../form-submission-processor` to update the dependency when you made changes.
+
+### Unit test
+
+With Jest you can run unit tests for `form-submission-processor`, go to that folder and do `npm run test` to run all unit tests for the `form-submission-processor`.
 
 ## Implementation
 
 TODO
 - Define which util method should do what
-    - unit testing (jest and node-csv-parse generator and xmlbuilder2)
-    - parsing (node-csv-parse and node-xml2js) for returning a js(on) object that can be used for the validation methods and easy to display in ui
-    - validation should validate: unique field reference, total amount is start amount minus discount, return invalid records in a format that can be displayed in ui
+    - validation should validate: unique field reference, total amount is start amount minus discount, 
+    - validation should return invalid records in a format that can be displayed in ui
 - Define ui components
     - Main page
     - Ui component for uploading file
