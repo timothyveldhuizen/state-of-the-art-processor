@@ -1,37 +1,58 @@
-let listInvalidRecords = [];
-
 export function validateRecords(records) {
-    validateUniqueFieldReference(records)
-    return listInvalidRecords;
+    return createInvalidRecords(validateUniqueRecords(records), validateTotalAmountRecords(records));
 }
 
-function validateUniqueFieldReference(records) {
+export function validateUniqueRecords(records) {
     // Find all the references number that are not unique
-    let notUniqueFieldReferences = records.filter((element, index, array) => {
-        return array.indexOf(element.reference) != index;
+    let notUniqueFieldReferences = records
+    .map(element => element.reference)
+    .filter((reference, index, array) => {
+        return array.indexOf(reference) != index;
     });
 
-    // console.log('notUniqueFieldReferences: ', notUniqueFieldReferences);
+    console.log('notUniqueFieldReferences: ', notUniqueFieldReferences);
 
     // Retrieve the records that have a reference that is not unique
     let notUniqueRecords = records.filter(element => {
-        return notUniqueFieldReferences.includes(element)
+        return notUniqueFieldReferences.includes(element.reference)
     });
-    // console.log('notUniqueRecords', notUniqueRecords);
+    console.log('notUniqueRecords', notUniqueRecords);
 
-    createInvalidRecords(notUniqueRecords);
+    return notUniqueRecords;
+    // return createInvalidRecords(notUniqueRecords);
+}
+
+export function validateTotalAmountRecords(records) {
+    // Find all the records that have a invalid total amount
+    let invalidTotalAmountRecords = records.filter((element, index, array) => {
+        if(!Number.isInteger(element.discount) && element.discount <= 0.5) {
+            return element.startAmount * (1 - element.discount) != element.totalAmount;
+        }
+        if(Number.isInteger(element.discount)) {
+            return element.startAmount - element.discount != element.totalAmount
+        }
+    });
+
+    console.log('invalidTotalAmountRecords: ', invalidTotalAmountRecords);
+
+    return invalidTotalAmountRecords;
+    // return createInvalidRecords(invalidTotalAmountRecords);
 }
 
 // Push it to invalid records
 // Method to use adding updating invalid records that does a check on notUnique and invalidAmount
-function createInvalidRecords(invalidRecords) {
-    invalidRecords.forEach(element => {
-        listInvalidRecords.push({
-            notUnique: true,
-            invalidAmount: false,
-            record: element,
-        })
-    })
+export function createInvalidRecords(notUniqueRecords, invalidTotalAmountRecords) {
+    let invalidRecordsList = [];
 
-    return listInvalidRecords;
+    
+
+    // invalidRecords.forEach(element => {
+    //     listInvalidRecords.push({
+    //         notUnique: true,
+    //         invalidAmount: false,
+    //         record: element,
+    //     })
+    // })
+
+    // return listInvalidRecords;
 }
