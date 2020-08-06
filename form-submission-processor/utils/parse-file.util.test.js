@@ -24,12 +24,12 @@ const parsedResult = [
 
 describe('Parsing the input files', () => {
     it('should convert string to camelcasing', () => {
-        const input = 'Start-Amount and total Amount';
-        const expected = 'startAmountAndTotalAmount';
+        const input = 'Start-Amount and total Amount  Is   Valid';
+        const expected = 'startAmountAndTotalAmountIsValid';
         expect(convertToCamelCasing(input)).toEqual(expected)
     });
 
-    it('should parse csv input', () => {
+    it('should parse csv input to array of record objects', () => {
         const csvInput = `
 Reference,Name,Phone Number,Subscription,Start Amount,Discount,Total Amount
 1,John Doe,123456789,Premium 1,10,5,5
@@ -38,7 +38,7 @@ Reference,Name,Phone Number,Subscription,Start Amount,Discount,Total Amount
         expect(parseFile(csvInput, 'csv')).toStrictEqual(parsedResult);
     });
 
-    it('should parse xml input', () => {
+    it('should parse xml input to array of record objects', () => {
         const xmlInput = `
             <records>
                 <record reference="1">
