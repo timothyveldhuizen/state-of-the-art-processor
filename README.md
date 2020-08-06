@@ -32,7 +32,8 @@ Also the input and validation logic should be separated as much as possible, so 
 
 ### Install and start ui
 
-Go to the correct app folder, e.g. `cd angular/app` and run `npm install` or to run go to the root directory and do `npm run start:angular`.
+Go to the correct app folder, e.g. `cd angular/app` and run `npm install`.
+To run go to the root directory and do `npm run start:angular`.
 
 The apps contain a local NPM dependency `form-submission-processor` which points to the exact same folder with all the logic for processing the form submission records.
 
@@ -43,13 +44,12 @@ Issue: Vue doesn't hot-reload the dependency in node_modules when making changes
 ### Unit test
 
 With Jest you can run unit tests for `form-submission-processor`, go to that folder and do `npm run test` to run all unit tests for the `form-submission-processor`.
+This will handle the parsing of the files (csv, xml) and transforming it into an array of record objects.
+Also it will validate the record objects and return a validated list of record objects.
 
 ## Implementation
 
 TODO
-- Define which util method should do what
-    - validation should validate: unique field reference, total amount is start amount minus discount, 
-    - validation should return invalid records in a format that can be displayed in ui
 - Define ui components
     - Main page
     - Ui component for uploading file
