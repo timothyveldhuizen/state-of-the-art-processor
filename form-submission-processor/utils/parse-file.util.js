@@ -3,7 +3,7 @@ import { parseString } from 'xml2js';
 import { parseNumbers } from 'xml2js/lib/processors';
 
 export function parseFile(input, fileType) {
-    if(fileType == 'csv') {
+    if(fileType == 'text/csv') {
         /* 
         * header: true, makes the result a key-value pair e.g. header: value
         * dynamicTyping: true, makes strings containing boolean or numeric value to result in a boolean or number object
@@ -12,7 +12,7 @@ export function parseFile(input, fileType) {
         */
         return Papa.parse(input, {header: true, dynamicTyping: true, skipEmptyLines: true, transformHeader: convertToCamelCasing}).data;
     }
-    if(fileType == 'xml') {
+    if(fileType == 'text/xml') {
         /*
         * explicitRoot: false, will not include the root xml element in the outputted result
         * explicitArray: false, will not return Array values for single values in the xml element

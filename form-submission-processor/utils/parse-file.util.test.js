@@ -35,7 +35,7 @@ Reference,Name,Phone Number,Subscription,Start Amount,Discount,Total Amount
 1,John Doe,123456789,Premium 1,10,5,5
 2,John Doe,123456789,Premium 2,10,0,10`;
         
-        expect(parseFile(csvInput, 'csv')).toStrictEqual(parsedResult);
+        expect(parseFile(csvInput, 'text/csv')).toStrictEqual(parsedResult);
     });
 
     it('should parse xml input to array of record objects', () => {
@@ -59,6 +59,6 @@ Reference,Name,Phone Number,Subscription,Start Amount,Discount,Total Amount
                 </record>
             </records>`;
 
-        expect(parseFile(xmlInput, 'xml')).toStrictEqual(parsedResult);
+        expect(parseFile(xmlInput, 'text/xml')).toStrictEqual(parsedResult);
     });
 });
