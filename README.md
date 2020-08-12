@@ -49,13 +49,71 @@ With Jest you can run unit tests for `form-submission-processor`, go to that fol
 
 ## Implementation
 
-TODO
+### form-submission-processor
+
+This is a local NPM dependency and is using Papa Parse and xml2js to parse uploaded text/csv or text/xml files.
+
+#### Parsing the file
+
+[Papa Parse](https://www.npmjs.com/package/papaparse) was picked as it is a standalone dependency, small in unpacked size and has a easy to use parse method with a lot of config and value process / transform options. Even by default a fast mode and can handle large files.
+
+[xml2js](https://www.npmjs.com/package/xml2js) was picked as it is very small in unpacked size, easy to use parse method with a lot of config and value process / transform options. Quite similar to Papa Parse.
+
+Because they are quite similar in parse method it is easy to return the same model after parsing, which can be used to be validated.
+
+For both parse methods we configured numeric values to be numeric values in the parsed object and to return a clean object as possible resembling a record form submission record.
+
+During that parsing a custom transformation function is used that converts the csv headers or xml tagnames to camelCasing. So the returned object has keys that are camelCased and consistent no matter if you parse a csv or xml file.
+
+The returned object after parsing csv or xml is:
+```js
+{
+    reference: 1,
+    discount: 5,
+    name: 'John Doe',
+    phoneNumber: 123456789,
+    startAmount: 10,
+    subscription: 'Premium 1',
+    totalAmount: 5,
+},
+```
+
+#### Validating the file
+
+The validation is done on:
+- The `reference` field should be unique, so if 3 records have the same id, then all these 3 records don't have a unique reference field
+- The `totalAmount` field should be correct
+    - If discount is a percentage (0.5 or lower) then check by using a percentage calculation.
+    - If discount is a integer then check by subtracting
+
+After validation a new array is returned with all the records details and the outcome of the validation.
+The validated object is:
+```js
+{
+    isUniqueReference: false,
+    isValidTotalAmount: true,
+    record: {
+            reference: 1,
+            discount: 5,
+            name: 'John Doe 1',
+            phoneNumber: 123456789,
+            startAmount: 10,
+            subscription: 'Premium 1',
+            totalAmount: 5,
+        },
+},
+```
+DONE
 - Define ui components
     - Main page: App
     - Ui component for uploading file: FileUpload
     - Ui component for displaying results: RecordTable
 - Define what or how to display a user friendly / informative table
-    - Transform boolean value to a nice message
-    - Add table headers
-    - Add filtering on the table (as it displays all the validated records, so valid and invalid ones)
-    - Preset the filtering to only show invalid records?
+    - Transform boolean value to a nice message: validationMessage
+    - Add table headers: static text headers
+    - Add filtering on the table (as it displays all the validated records, so valid and invalid ones): buttons with filter on all, valid or invalid
+
+TODO
+- add isValidDiscount ?
+- add error handling in file upload..?
+- Table Preset the filtering to only show invalid records?

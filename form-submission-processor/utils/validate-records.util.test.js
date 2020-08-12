@@ -83,6 +83,46 @@ describe('Validate field total amount of the record', () => {
         expect(validateFieldTotalAmountIsValid(record)).toBe(true);
     });
 
+    
+    it('should return false when the start amount field is a negative number', () => {
+        const record = {
+            reference: 2,
+            discount: 5,
+            name: 'John Doe',
+            phoneNumber: 123456789,
+            startAmount: -10,
+            subscription: 'Premium 1',
+            totalAmount: 5,
+        }
+        expect(validateFieldTotalAmountIsValid(record)).toBe(false);
+    });
+    
+    it('should return false when the total amount field is a negative number', () => {
+        const record = {
+            reference: 2,
+            discount: 5,
+            name: 'John Doe',
+            phoneNumber: 123456789,
+            startAmount: 10,
+            subscription: 'Premium 1',
+            totalAmount: -5,
+        }
+        expect(validateFieldTotalAmountIsValid(record)).toBe(false);
+    });
+    
+    it('should return false when the discount field is a negative number', () => {
+        const record = {
+            reference: 2,
+            discount: -5,
+            name: 'John Doe',
+            phoneNumber: 123456789,
+            startAmount: 10,
+            subscription: 'Premium 1',
+            totalAmount: 5,
+        }
+        expect(validateFieldTotalAmountIsValid(record)).toBe(false);
+    });
+
     it('should return false when the discount field is a percentage less than 0.5 and total amount field is invalid', () => {
         const record = {
             reference: 2,
@@ -94,6 +134,19 @@ describe('Validate field total amount of the record', () => {
             totalAmount: 4,
         }
         expect(validateFieldTotalAmountIsValid(record)).toBe(false);
+    });
+
+    it('should return true when the discount field is a percentage less than 0.5 and total amount field is valid', () => {
+        const record = {
+            reference: 2,
+            discount: 0.15,
+            name: 'John Doe',
+            phoneNumber: 123456789,
+            startAmount: 10,
+            subscription: 'Premium 1',
+            totalAmount: 8.5,
+        }
+        expect(validateFieldTotalAmountIsValid(record)).toBe(true);
     });
 
     it('should return false when the discount field is a percentage more than 0.5', () => {
