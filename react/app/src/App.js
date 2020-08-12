@@ -8,13 +8,13 @@ function App() {
   const hi = helloWorld();
 
   return (
-    <div className="App">
+    <>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <h1>{hi}</h1>
-        <FileUpload />
       </header>
-    </div>
+      <FileUpload />
+    </>
   );
 }
 
