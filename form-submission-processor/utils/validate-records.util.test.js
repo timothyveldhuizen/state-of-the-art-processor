@@ -1,4 +1,4 @@
-import { validateFieldReferenceIsUnique, validateFieldTotalAmountIsValid, validateRecords } from './validate-records.util';
+import { validateFieldReferenceIsUnique, validateFieldTotalAmountIsValid, validateRecords, validateFieldStartAmount, validateFieldDiscount } from './validate-records.util';
 
 describe('Validate field reference of the record', () => {
     it('should return true when the reference is unique', () => {
@@ -28,7 +28,7 @@ describe('Validate field reference of the record', () => {
         expect(validateFieldReferenceIsUnique(record2, records)).toBe(true);
     });
 
-    it('should return false when the reference is not unique', () => {
+    it('should return invalid message when the reference is not unique', () => {
         const record1 = {
             reference: 1,
             discount: 5,
@@ -51,13 +51,13 @@ describe('Validate field reference of the record', () => {
 
         const records = [record1, record2]
 
-        expect(validateFieldReferenceIsUnique(record1, records)).toBe(false);
-        expect(validateFieldReferenceIsUnique(record2, records)).toBe(false);
+        expect(validateFieldReferenceIsUnique(record1, records)).toBe('Reference 1 is not unique');
+        expect(validateFieldReferenceIsUnique(record2, records)).toBe('Reference 1 is not unique');
     });    
 });
 
 describe('Validate field total amount of the record', () => {
-    it('should return false when the total amount field is invalid', () => {
+    it('should return invalid message when the total amount field is invalid', () => {
         const record = {
             reference: 2,
             discount: 5,
@@ -67,7 +67,7 @@ describe('Validate field total amount of the record', () => {
             subscription: 'Premium 1',
             totalAmount: 6,
         }
-        expect(validateFieldTotalAmountIsValid(record)).toBe(false);
+        expect(validateFieldTotalAmountIsValid(record)).toBe('Total amount of 6 is not correct, should be 5');
     });
 
     it('should return true when the total amount field is valid', () => {
@@ -84,7 +84,7 @@ describe('Validate field total amount of the record', () => {
     });
 
     
-    it('should return false when the start amount field is a negative number', () => {
+    it('should return invalid message when the start amount field is a negative number', () => {
         const record = {
             reference: 2,
             discount: 5,
@@ -94,10 +94,24 @@ describe('Validate field total amount of the record', () => {
             subscription: 'Premium 1',
             totalAmount: 5,
         }
-        expect(validateFieldTotalAmountIsValid(record)).toBe(false);
+        expect(validateFieldStartAmount(record)).toBe('Start amount of -10 can not be negative');
+        expect(validateFieldTotalAmountIsValid(record)).toBe('Calculated total amount of -15 is not correct, can not be negative');
+    });
+
+    it('should return invalid message when the calculated total amount field is a negative number', () => {
+        const record = {
+            reference: 2,
+            discount: 8,
+            name: 'John Doe',
+            phoneNumber: 123456789,
+            startAmount: 5,
+            subscription: 'Premium 1',
+            totalAmount: 5,
+        }
+        expect(validateFieldTotalAmountIsValid(record)).toBe('Calculated total amount of -3 is not correct, can not be negative');
     });
     
-    it('should return false when the total amount field is a negative number', () => {
+    it('should return invalid message when the total amount field is a negative number', () => {
         const record = {
             reference: 2,
             discount: 5,
@@ -107,10 +121,10 @@ describe('Validate field total amount of the record', () => {
             subscription: 'Premium 1',
             totalAmount: -5,
         }
-        expect(validateFieldTotalAmountIsValid(record)).toBe(false);
+        expect(validateFieldTotalAmountIsValid(record)).toBe('Total amount of -5 is not correct, should be 5');
     });
     
-    it('should return false when the discount field is a negative number', () => {
+    it('should return invalid message when the discount field is a negative number', () => {
         const record = {
             reference: 2,
             discount: -5,
@@ -120,10 +134,11 @@ describe('Validate field total amount of the record', () => {
             subscription: 'Premium 1',
             totalAmount: 5,
         }
-        expect(validateFieldTotalAmountIsValid(record)).toBe(false);
+        expect(validateFieldDiscount(record)).toBe('Discount of -5 can not be negative');
+        expect(validateFieldTotalAmountIsValid(record)).toBe('');
     });
 
-    it('should return false when the discount field is a percentage less than 0.5 and total amount field is invalid', () => {
+    it('should return invalid message when the discount field is a percentage less than 0.5 and total amount field is invalid', () => {
         const record = {
             reference: 2,
             discount: 0.5,
@@ -133,7 +148,8 @@ describe('Validate field total amount of the record', () => {
             subscription: 'Premium 1',
             totalAmount: 4,
         }
-        expect(validateFieldTotalAmountIsValid(record)).toBe(false);
+        expect(validateFieldDiscount(record)).toBe(true);
+        expect(validateFieldTotalAmountIsValid(record)).toBe('Total amount of 4 is not correct, should be 5');
     });
 
     it('should return true when the discount field is a percentage less than 0.5 and total amount field is valid', () => {
@@ -146,10 +162,11 @@ describe('Validate field total amount of the record', () => {
             subscription: 'Premium 1',
             totalAmount: 8.5,
         }
+        expect(validateFieldDiscount(record)).toBe(true);
         expect(validateFieldTotalAmountIsValid(record)).toBe(true);
     });
 
-    it('should return false when the discount field is a percentage more than 0.5', () => {
+    it('should return invalid message when the discount field is a percentage more than 0.5', () => {
         const record = {
             reference: 2,
             discount: 0.51,
@@ -159,7 +176,8 @@ describe('Validate field total amount of the record', () => {
             subscription: 'Premium 1',
             totalAmount: 4,
         }
-        expect(validateFieldTotalAmountIsValid(record)).toBe(false);
+        expect(validateFieldDiscount(record)).toBe('Discount of 51% is not valid, should be lower then 50%');
+        expect(validateFieldTotalAmountIsValid(record)).toBe('');
     });
 });
 
@@ -199,13 +217,13 @@ describe('Return a list of records', () => {
 
         const validatedRecords = [
             {
-                isUniqueReference: false,
+                isUniqueReference: 'Reference 1 is not unique',
                 isValidTotalAmount: true,
                 record: record1,
             },
             {
-                isUniqueReference: false,
-                isValidTotalAmount: false,
+                isUniqueReference: 'Reference 1 is not unique',
+                isValidTotalAmount: 'Total amount of 6 is not correct, should be 10',
                 record: record2,
             },
             {

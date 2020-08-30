@@ -3,80 +3,57 @@ import './RecordTable.css';
 
 function RecordTable(props) {
     const [filteredRecords, setFilteredRecords] = useState(props.records);
-
-    // function RecordTableHeaders() {
-    //     const [firstItem] = props.records;
-    //     console.log('firstItem', firstItem)
-    //     const itemHeaders = Object.keys(firstItem).map(header => {
-    //         if(header !== 'record') {
-    //            return <th>{header}</th>
-    //         }
-    //         return ''
-    //     });
-    //     const recordHeaders = Object.keys(firstItem.record).map(header => <th>{header}</th>)
-    //     const headers = itemHeaders.concat(recordHeaders)
-    //     return (
-    //         <>
-    //         {headers}
-    //         </>
-    //     )
-    // }
+    const [activeFilter, setActiveFilter] = useState('all');
 
     const recordTableItems = filteredRecords.map(item => {
-        console.log(item)
-        let validationMessage = '';
-        if (!item.isUniqueReference && !item.isValidTotalAmount) {
-            validationMessage = `Reference ${item.record.reference} is not unique and total amount of ${item.record.totalAmount} is not correct`;
-        }
-        if (!item.isUniqueReference && item.isValidTotalAmount) {
-            validationMessage = `Reference ${item.record.reference} is not unique`;
-        }
-        if (item.isUniqueReference && !item.isValidTotalAmount) {
-            validationMessage = `Total amount of ${item.record.totalAmount} is not correct`;
-        }
+        const isUnique = item.isUniqueReference === true ? '' : '!';
+        const isValidTotalAmount = item.isValidTotalAmount === true ? '' : '!';
 
         return (
             <tr>
-                <td>{validationMessage}</td>
-                <td>{item.record.reference}</td>
+                <td>{item.isUniqueReference} {item.isValidTotalAmount}</td>
+                <td>{item.record.reference} {isUnique} </td>
                 <td>{item.record.name}</td>
                 <td>{item.record.phoneNumber}</td>
                 <td>{item.record.subscription}</td>
                 <td>€ {item.record.startAmount}</td>
-                <td>- {Number.isInteger(item.record.discount) ? '€ ' + item.record.discount : item.record.discount * 100 + '%'}</td>
-                <td>€ {item.record.totalAmount}</td>
+                <td>{Number.isInteger(item.record.discount) ? '€ ' + item.record.discount : item.record.discount * 100 + '%'}</td>
+                <td>€ {item.record.totalAmount} {isValidTotalAmount} </td>
             </tr>
         )
     })
 
     function handleFilterRecords(e) {
         const filter = e.target.value;
-        console.log('filter', filter)
+
         if (filter === 'all') {
+            setActiveFilter('all');
             setFilteredRecords(props.records);
         }
         if (filter === 'valid') {
+            setActiveFilter('valid');
             setFilteredRecords(props.records.filter(item => item.isUniqueReference === true && item.isValidTotalAmount === true))
         }
         if (filter === 'invalid') {
-            setFilteredRecords(props.records.filter(item => item.isUniqueReference === false || item.isValidTotalAmount === false))
+            setActiveFilter('invalid');
+            setFilteredRecords(props.records.filter(item => item.isUniqueReference !== true || item.isValidTotalAmount !== true))
         }
-        console.log('filteredRecords', filteredRecords)
     }
 
     return (
         <>
             <h1>Record list</h1>
-            <p>Number of records {filteredRecords.length}</p>
 
             <table className="record-table">
-                {/* <RecordTableHeaders /> */}
                 <thead>
                     <tr>
-                        <th>
-                            <button onClick={handleFilterRecords} value="all">All records</button>
-                            <button onClick={handleFilterRecords} value="valid">Valid records</button>
-                            <button onClick={handleFilterRecords} value="invalid">Invalid records</button>
+                        <th colSpan="8">
+                            <div className="table-filter">
+                                <button onClick={handleFilterRecords} className={activeFilter === 'all' ? 'active-filter': ''} value="all">All records</button>
+                                <button onClick={handleFilterRecords} className={activeFilter === 'valid' ? 'active-filter': ''} value="valid">Valid records</button>
+                                <button onClick={handleFilterRecords} className={activeFilter === 'invalid' ? 'active-filter': ''} value="invalid">Invalid records</button>
+                            </div>
+                            <p>Number of records {filteredRecords.length}</p>
                         </th>
                     </tr>
                     <tr>

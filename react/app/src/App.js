@@ -11,7 +11,7 @@ function App() {
     <>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <h1>{hi}</h1>
+        <span>{hi}</span>
       </header>
       <FileUpload />
     </>

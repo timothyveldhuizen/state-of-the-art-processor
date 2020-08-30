@@ -3,6 +3,10 @@
     font-family: Arial,sans-serif;
     color: #222;
   }
+
+  .table-filter {
+    float: right;
+  }
   
   thead {
     background: #f9fafb;
@@ -23,4 +27,9 @@
     font-size: 1rem;
     font-weight: bold;
     color: #333;
+  }
+
+  button.active-filter {
+    color: #e0e1e2;
+    background-color: #333;
   }
