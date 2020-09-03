@@ -103,17 +103,3 @@ The validated object is:
         },
 },
 ```
-DONE
-- Define ui components
-    - Main page: App
-    - Ui component for uploading file: FileUpload
-    - Ui component for displaying results: RecordTable
-- Define what or how to display a user friendly / informative table
-    - Transform boolean value to a nice message: validationMessage
-    - Add table headers: static text headers
-    - Add filtering on the table (as it displays all the validated records, so valid and invalid ones): buttons with filter on all, valid or invalid
-
-TODO
-- add isValidDiscount ?
-- add error handling in file upload..?
-- Table Preset the filtering to only show invalid records?

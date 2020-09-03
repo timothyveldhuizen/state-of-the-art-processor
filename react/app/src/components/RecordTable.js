@@ -1,23 +1,25 @@
 import React, { useState } from 'react';
 import './RecordTable.css';
+import ErrorPopover from './ErrorPopover';
 
 function RecordTable(props) {
     const [filteredRecords, setFilteredRecords] = useState(props.records);
     const [activeFilter, setActiveFilter] = useState('all');
 
     const recordTableItems = filteredRecords.map(item => {
-        const isUnique = item.isUniqueReference === true ? '' : '!';
-        const isValidTotalAmount = item.isValidTotalAmount === true ? '' : '!';
+        const isUnique = item.isUniqueReference === true ? '' : <ErrorPopover message={item.isUniqueReference} />;
+        const isValidDiscount = item.isValidDiscount === true ? '' : <ErrorPopover message={item.isValidDiscount} />;
+        const isValidStartAmount = item.isValidStartAmount === true ? '' : <ErrorPopover message={item.isValidStartAmount} />;
+        const isValidTotalAmount = item.isValidTotalAmount === true ? '' : <ErrorPopover message={item.isValidTotalAmount} />;
 
         return (
             <tr>
-                <td>{item.isUniqueReference} {item.isValidTotalAmount}</td>
                 <td>{item.record.reference} {isUnique} </td>
-                <td>{item.record.name}</td>
+                <td>{item.record.name} </td>
                 <td>{item.record.phoneNumber}</td>
                 <td>{item.record.subscription}</td>
-                <td>€ {item.record.startAmount}</td>
-                <td>{Number.isInteger(item.record.discount) ? '€ ' + item.record.discount : item.record.discount * 100 + '%'}</td>
+                <td>€ {item.record.startAmount} {isValidStartAmount} </td>
+                <td>{Number.isInteger(item.record.discount) ? '€ ' + item.record.discount : item.record.discount * 100 + '%'} {isValidDiscount}</td>
                 <td>€ {item.record.totalAmount} {isValidTotalAmount} </td>
             </tr>
         )
@@ -57,7 +59,6 @@ function RecordTable(props) {
                         </th>
                     </tr>
                     <tr>
-                        <th>Validation</th>
                         <th>Reference</th>
                         <th>Name</th>
                         <th>Phone number</th>

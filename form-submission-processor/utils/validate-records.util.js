@@ -24,14 +24,14 @@ export function validateFieldReferenceIsUnique(record, array) {
 }
 
 export function validateFieldStartAmount(record) {
-    return Math.sign(record.startAmount) < -0 ? `Start amount of ${record.startAmount} can not be negative` : true;
+    return Math.sign(record.startAmount) == -1 ? `Start amount of ${record.startAmount} can not be negative` : true;
 }
 
 export function validateFieldDiscount(record) {
-    if(Math.sign(record.discount) < -0) {
+    if(Math.sign(record.discount) == -1) {
         return `Discount of ${record.discount} can not be negative`;
     }
-    if(record.discount >= 0.5) {
+    if(!Number.isInteger(record.discount) && record.discount > 0.5 && record.discount < 1) {
         return `Discount of ${record.discount * 100}% is not valid, should be lower then 50%`;
     }
     return true;
@@ -42,11 +42,11 @@ export function validateFieldTotalAmountIsValid(record) {
     if(!Number.isInteger(record.discount)) {
         const calculatedTotalAmount = record.startAmount * (1 - record.discount);
 
-        if(Math.sign(calculatedTotalAmount) < -0) {
+        if(Math.sign(calculatedTotalAmount) == -1) {
             return `Calculated total amount of ${calculatedTotalAmount} is not correct, can not be negative`;
         }
         if(calculatedTotalAmount != record.totalAmount) {
-            return `Total amount of ${record.totalAmount} is not correct, should be ${calculatedTotalAmount}`
+            return `Calculated total amount of ${record.totalAmount} is not correct, should be ${calculatedTotalAmount}`
         }
 
         return true;
@@ -55,11 +55,11 @@ export function validateFieldTotalAmountIsValid(record) {
     if(Number.isInteger(record.discount)) {
         const calculatedTotalAmount = record.startAmount - record.discount;
 
-        if(Math.sign(calculatedTotalAmount) < -0) {
+        if(Math.sign(calculatedTotalAmount) == -1) {
             return `Calculated total amount of ${calculatedTotalAmount} is not correct, can not be negative`;
         }
         if(calculatedTotalAmount != record.totalAmount) {
-            return `Total amount of ${record.totalAmount} is not correct, should be ${calculatedTotalAmount}`
+            return `Calculated total amount of ${record.totalAmount} is not correct, should be ${calculatedTotalAmount}`
         }
         return true;
     }
