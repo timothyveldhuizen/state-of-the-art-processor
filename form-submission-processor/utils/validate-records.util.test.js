@@ -124,7 +124,7 @@ describe('Validate field total amount of the record', () => {
         expect(validateFieldTotalAmountIsValid(record)).toBe('Calculated total amount of -5 is not correct, should be 5');
     });
     // fix this test
-    xit('should return invalid message when the discount field is a negative number', () => {
+    it('should return invalid message when the discount field is a negative number', () => {
         const record = {
             reference: 2,
             discount: -5,
@@ -166,7 +166,7 @@ describe('Validate field total amount of the record', () => {
         expect(validateFieldTotalAmountIsValid(record)).toBe(true);
     });
     // fix this test
-    xit('should return invalid message when the discount field is a percentage more than 0.5', () => {
+    it('should return invalid message when the discount field is a percentage more than 0.5', () => {
         const record = {
             reference: 2,
             discount: 0.51,

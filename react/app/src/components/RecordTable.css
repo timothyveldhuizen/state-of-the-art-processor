@@ -2,6 +2,7 @@
     border-collapse: collapse;
     font-family: Arial,sans-serif;
     color: #222;
+    margin: 20px;
   }
 
   .table-filter {

@@ -45,6 +45,9 @@ export function validateFieldTotalAmountIsValid(record) {
         if(Math.sign(calculatedTotalAmount) == -1) {
             return `Calculated total amount of ${calculatedTotalAmount} is not correct, can not be negative`;
         }
+        if(validateFieldStartAmount(record) != true || validateFieldDiscount(record) != true) {
+            return `Calculated total amount of ${record.totalAmount} is not correct`;
+        }
         if(calculatedTotalAmount != record.totalAmount) {
             return `Calculated total amount of ${record.totalAmount} is not correct, should be ${calculatedTotalAmount}`
         }
@@ -57,6 +60,9 @@ export function validateFieldTotalAmountIsValid(record) {
 
         if(Math.sign(calculatedTotalAmount) == -1) {
             return `Calculated total amount of ${calculatedTotalAmount} is not correct, can not be negative`;
+        }
+        if(validateFieldStartAmount(record) != true || validateFieldDiscount(record) != true) {
+            return `Calculated total amount of ${record.totalAmount} is not correct`;
         }
         if(calculatedTotalAmount != record.totalAmount) {
             return `Calculated total amount of ${record.totalAmount} is not correct, should be ${calculatedTotalAmount}`
