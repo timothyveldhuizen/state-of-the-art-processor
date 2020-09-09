@@ -1,0 +1,7 @@
+.popover-text {
+    background: lightgrey;
+    padding: 0.4em;
+    position: absolute;
+    border-radius: 0.4em;
+    box-shadow: 0.4em;
+}

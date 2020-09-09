@@ -123,7 +123,7 @@ describe('Validate field total amount of the record', () => {
         }
         expect(validateFieldTotalAmountIsValid(record)).toBe('Calculated total amount of -5 is not correct, should be 5');
     });
-    // fix this test
+
     it('should return invalid message when the discount field is a negative number', () => {
         const record = {
             reference: 2,
@@ -135,7 +135,7 @@ describe('Validate field total amount of the record', () => {
             totalAmount: 5,
         }
         expect(validateFieldDiscount(record)).toBe('Discount of -5 can not be negative');
-        expect(validateFieldTotalAmountIsValid(record)).toBe('Calculated total amount of 5 is not correct');
+        expect(validateFieldTotalAmountIsValid(record)).toBe('Calculated total amount of 5 is not correct, discount is invalid');
     });
 
     it('should return invalid message when the discount field is a percentage less than 0.5 and total amount field is invalid', () => {
@@ -165,7 +165,7 @@ describe('Validate field total amount of the record', () => {
         expect(validateFieldDiscount(record)).toBe(true);
         expect(validateFieldTotalAmountIsValid(record)).toBe(true);
     });
-    // fix this test
+
     it('should return invalid message when the discount field is a percentage more than 0.5', () => {
         const record = {
             reference: 2,
@@ -177,7 +177,7 @@ describe('Validate field total amount of the record', () => {
             totalAmount: 4,
         }
         expect(validateFieldDiscount(record)).toBe('Discount of 51% is not valid, should be lower then 50%');
-        expect(validateFieldTotalAmountIsValid(record)).toBe('Calculated total amount of 4 is not correct');
+        expect(validateFieldTotalAmountIsValid(record)).toBe('Calculated total amount of 4 is not correct, discount is invalid');
     });
 });
 

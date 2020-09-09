@@ -1,0 +1,36 @@
+<h1>Record list</h1>
+
+<table className="record-table">
+    <thead>
+        <tr>
+            <th colSpan="8">
+                <div className="table-filter">
+                    <button (click)="handleFilterRecords($event.target.value)" [ngClass]="{'active-filter': activeFilter === 'all'}" value="all">All records</button>
+                    <button (click)="handleFilterRecords($event.target.value)" [ngClass]="{'active-filter': activeFilter === 'valid'}" value="valid">Valid records</button>
+                    <button (click)="handleFilterRecords($event.target.value)" [ngClass]="{'active-filter': activeFilter === 'invalid'}" value="invalid">Invalid records</button>
+                </div>
+                <p>Number of records {{ filteredRecords.length }}</p>
+            </th>
+        </tr>
+        <tr>
+            <th>Reference</th>
+            <th>Name</th>
+            <th>Phone number</th>
+            <th>Subscription</th>
+            <th>Amount</th>
+            <th>Discount</th>
+            <th>Total amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of filteredRecords">
+            <td>{{ item.record.reference }} <app-error-popover *ngIf="item.isUniqueReference != true" message={{item.isUniqueReference}}></app-error-popover></td>
+            <td>{{ item.record.name }} </td>
+            <td>{{ item.record.phoneNumber }}</td>
+            <td>{{ item.record.subscription }}</td>
+            <td>€ {{ item.record.startAmount }} <app-error-popover *ngIf="item.isValidStartAmount != true" message={{item.isValidStartAmount}}></app-error-popover></td>
+            <td>{{ transformDiscount(item.record.discount) }} <app-error-popover *ngIf="item.isValidDiscount != true" message={{item.isValidDiscount}}></app-error-popover></td>
+            <td>€ {{ item.record.totalAmount }} <app-error-popover *ngIf="item.isValidTotalAmount != true" message={{item.isValidTotalAmount}}></app-error-popover></td>
+        </tr>
+    </tbody>
+</table>

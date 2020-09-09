@@ -1,0 +1,16 @@
+<p>file-upload works!</p>
+<div>
+    <label for="file-upload">Choose a file to process:</label>
+    <input type="file"
+        id="file-upload"
+        name="file-upload"
+        accept="text/csv, text/xml"
+        (change)="handleFileUploadChange($event.target.files[0])"
+        />
+    <div *ngIf="fileIsUploaded; else elseNoResults">
+        <app-record-table [records]="validatedRecords"></app-record-table>
+    </div>
+    <ng-template #elseNoResults>
+        <p>No results, please upload a file to process</p>
+    </ng-template>
+</div>
