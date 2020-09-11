@@ -67,6 +67,7 @@ During that parsing a custom transformation function is used that converts the c
 
 The returned object after parsing csv or xml is:
 ```js
+// A parsed form submission record from a csv or xml file
 {
     reference: 1,
     discount: 5,
@@ -82,15 +83,20 @@ The returned object after parsing csv or xml is:
 
 The validation is done on:
 - The `reference` field should be unique, so if 3 records have the same id, then all these 3 records don't have a unique reference field
-- The `totalAmount` field should be correct
+- The `startAmount` can not be negative
+- The `discount` can not be negative or a percentage higher than 0.5
+- The `totalAmount` field can not be negative initially, calculated to a negative value or initial value and calculated value are not the same.
     - If discount is a percentage (0.5 or lower) then check by using a percentage calculation.
     - If discount is a integer then check by subtracting
 
 After validation a new array is returned with all the records details and the outcome of the validation.
 The validated object is:
 ```js
+// A validated record containing extra information about the validated fields
 {
-    isUniqueReference: false,
+    isUniqueReference: 'Reference 1 is not unique',
+    isValidStartAmount: true,
+    isValidDiscount: 'Discount of -5 can not be negative',
     isValidTotalAmount: true,
     record: {
             reference: 1,
