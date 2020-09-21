@@ -109,3 +109,25 @@ The validated object is:
         },
 },
 ```
+
+### UI Implementation and data flow
+
+The components are:
+
+- FileUpload: Contains the file input to select a file to upload
+- RecordTable: Displays the table of records that are in the file
+- ErrorPopover: Displays an error icon with extra information about the error
+
+The logical structure is: FileUpload > RecordTable > ErrorPopover
+
+#### FileUpload
+
+A smart component that handles the file upload and uses `form-submission-processor` to validate and parse the file. That result is then passed as a property to RecordTable.
+
+#### RecordTable
+
+A presentational component that simply loops over all the records received from FileUpload and display it in a table. Also if the records contains incorrect data then it will pass this data to ErrorPopover.
+
+#### ErrorPopover
+
+A presentational component that displays an icon and on hover displays the invalid information message received from RecordTable.
