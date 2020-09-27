@@ -1,4 +1,4 @@
-import { parseFile } from './parse-file.util';
+import { parseFile, FileType } from './parse-file.util';
 import { convertToCamelCasing } from './parse-file.util';
 
 const parsedResult = [
@@ -35,7 +35,7 @@ Reference,Name,Phone Number,Subscription,Start Amount,Discount,Total Amount
 1,John Doe,123456789,Premium 1,10,5,5
 2,John Doe,123456789,Premium 2,10,0,10`;
         
-        expect(parseFile(csvInput, 'text/csv')).toStrictEqual(parsedResult);
+        expect(parseFile(csvInput, FileType.CSV)).toStrictEqual(parsedResult);
     });
 
     it('should parse xml input to array of record objects', () => {
@@ -59,6 +59,6 @@ Reference,Name,Phone Number,Subscription,Start Amount,Discount,Total Amount
                 </record>
             </records>`;
 
-        expect(parseFile(xmlInput, 'text/xml')).toStrictEqual(parsedResult);
+        expect(parseFile(xmlInput, FileType.XML)).toStrictEqual(parsedResult);
     });
 });

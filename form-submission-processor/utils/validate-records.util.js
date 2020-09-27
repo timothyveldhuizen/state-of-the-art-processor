@@ -18,62 +18,56 @@ export function validateFieldReferenceIsUnique(record, array) {
         return refArray.indexOf(ref) !== index
     })
 
-    // Check if the records reference is included in the not unique field references
+    // Check if the records reference id is included in the not unique field references
     return notUniqueFieldReferences.includes(record.reference) ? `Reference ${record.reference} is not unique` : true;
 
 }
 
 export function validateFieldStartAmount(record) {
-    return Math.sign(record.startAmount) == -1 ? `Start amount of ${record.startAmount} can not be negative` : true;
+    return isNegative(record.startAmount) ? `Start amount of ${record.startAmount} can not be negative` : true;
 }
 
 export function validateFieldDiscount(record) {
-    if(Math.sign(record.discount) == -1) {
+    if(isNegative(record.discount)) {
         return `Discount of ${record.discount} can not be negative`;
     }
-    if(!Number.isInteger(record.discount) && record.discount > 0.5 && record.discount < 1) {
+    if(isPercentage(record.discount) && isPercentageLowerThen50Percent(record.discount)) {
         return `Discount of ${record.discount * 100}% is not valid, should be lower then 50%`;
     }
     return true;
 }
 
 export function validateFieldTotalAmountIsValid(record) {
-    // If discount is a percentage, then calculate total amount with discount percentage
-    if(!Number.isInteger(record.discount)) {
-        const calculatedTotalAmount = record.startAmount * (1 - record.discount);
-
-        if(Math.sign(calculatedTotalAmount) == -1) {
-            return `Calculated total amount of ${calculatedTotalAmount} is not correct, can not be negative`;
-        }
-        if(validateFieldStartAmount(record) != true) {
-            return `Calculated total amount of ${record.totalAmount} is not correct`;
-        }
-        if(validateFieldDiscount(record) != true) {
-            return `Calculated total amount of ${record.totalAmount} is not correct, discount is invalid`;
-        }
-        if(calculatedTotalAmount != record.totalAmount) {
-            return `Calculated total amount of ${record.totalAmount} is not correct, should be ${calculatedTotalAmount}`
-        }
-
-        return true;
+    switch(isPercentage(record.discount)) {
+        case true: return validateCalculatedTotalAmount(record.startAmount * (1 - record.discount), record);
+        case false: return validateCalculatedTotalAmount(record.startAmount - record.discount, record);
     }
-    // If discount is a integer, then calculate total amount by subtracting discount
-    if(Number.isInteger(record.discount)) {
-        const calculatedTotalAmount = record.startAmount - record.discount;
+}
 
-        if(Math.sign(calculatedTotalAmount) == -1) {
-            return `Calculated total amount of ${calculatedTotalAmount} is not correct, can not be negative`;
-        }
-        if(validateFieldStartAmount(record) != true ) {
-            return `Calculated total amount of ${record.totalAmount} is not correct`;
-        }
-        if(validateFieldDiscount(record) != true) {
-            return `Calculated total amount of ${record.totalAmount} is not correct, discount is invalid`;
-        }
-        if(calculatedTotalAmount != record.totalAmount) {
-            return `Calculated total amount of ${record.totalAmount} is not correct, should be ${calculatedTotalAmount}`
-        }
-        return true;
+function validateCalculatedTotalAmount(calculatedTotalAmount, record) {
+    if(isNegative(calculatedTotalAmount)) {
+        return `Calculated total amount of ${calculatedTotalAmount} is not correct, can not be negative`;
+    }
+    if(validateFieldStartAmount(record) !== true) {
+        return `Calculated total amount of ${record.totalAmount} is not correct`;
+    }
+    if(validateFieldDiscount(record) !== true) {
+        return `Calculated total amount of ${record.totalAmount} is not correct, discount is invalid`;
+    }
+    if(calculatedTotalAmount !== record.totalAmount) {
+        return `Calculated total amount of ${record.totalAmount} is not correct, should be ${calculatedTotalAmount}`
     }
     return true;
+}
+
+function isPercentage(number) {
+    return !Number.isInteger(number);
+}
+
+function isPercentageLowerThen50Percent(number) {
+    return number > 0.5 && number < 1
+}
+
+function isNegative(number) {
+    return Math.sign(number) === -1;
 }

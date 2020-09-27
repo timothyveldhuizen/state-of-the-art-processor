@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { parseFile, validateRecords } from 'form-submission-processor';
+import { parseFile, getAllowedFileTypesToString, validateRecords } from 'form-submission-processor';
 import RecordTable from './RecordTable';
 
 function FileUpload() {
@@ -32,7 +32,7 @@ function FileUpload() {
             <input type="file"
                 id="file-upload"
                 name="file-upload"
-                accept="text/csv, text/xml"
+                accept={getAllowedFileTypesToString()}
                 onChange={handleFileUploadChange}
                 />
             {fileIsUploaded
